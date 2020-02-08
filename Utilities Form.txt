@@ -1,0 +1,38 @@
+Private Sub backbut_Click()
+
+'go back to main form
+Unload Me
+
+'show main form
+b_Mainform.Show 1
+
+End Sub
+
+Private Sub deldatbut_Click()
+
+'set data in range to "nothing'
+Range("a1:Z1000") = ""
+
+End Sub
+
+Private Sub descriptionlbl_Click()
+
+End Sub
+
+Private Sub printoutworkbookbut_Click()
+'print workbook
+ThisWorkbook.PrintOut
+
+End Sub
+
+Private Sub savebut_Click()
+
+'save workbook and display message
+ThisWorkbook.Save
+MsgBox "Workbook has been saved"
+
+End Sub
+
+Private Sub UserForm_Click()
+
+End Sub

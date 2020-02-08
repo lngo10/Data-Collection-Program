@@ -1,0 +1,36 @@
+Private Sub backbut_Click()
+
+'unload forms
+Unload a_Creditsform
+Unload b_Mainform
+Unload Me
+
+'show main form
+b_Mainform.Show 1
+
+End Sub
+
+Private Sub nobut_Click()
+
+'unload forms
+Unload Me
+
+'show mainform
+b_Mainform.Show 1
+
+End Sub
+
+
+
+Private Sub UserForm_Click()
+
+End Sub
+
+Private Sub yesbut_Click()
+
+'unload form and quit application
+Unload Me
+Application.Quit
+
+
+End Sub

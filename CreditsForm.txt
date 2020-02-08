@@ -1,0 +1,22 @@
+Private Sub infolabel_Click()
+
+End Sub
+
+Private Sub UserForm_Initialize()
+
+'display credits
+temp = "Loc Ngo" & Chr(13)
+temp = temp & "Computing for Industrial Engineers" & Chr(13)
+temp = temp & "INDE 2331" & Chr(13)
+temp = temp & "VBA Final" & Chr(13)
+infolabel.Caption = temp & "12 NOV 2019" & Chr(13)
+
+End Sub
+
+
+Private Sub okbut_Click()
+'move to main menu
+Unload Me
+b_Mainform.Show 1
+
+End Sub

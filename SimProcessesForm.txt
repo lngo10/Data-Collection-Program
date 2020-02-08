@@ -1,0 +1,45 @@
+Private Sub anasimdatbut_Click()
+
+'unload form
+Unload Me
+
+'show analyze simulation data form
+d_anasimdatform.Show 1
+
+End Sub
+
+Private Sub backbut_Click()
+'unload previous pages
+Unload Me
+Unload b_Mainform
+
+'go back to the main form
+b_Mainform.Show 1
+
+End Sub
+Private Sub colsimbut_Click()
+'go to collect dataform
+Unload Me
+Unload b_Mainform
+
+'show collect simulation data form
+d_Colsimform.Show 1
+
+End Sub
+
+
+
+Private Sub Outputsimdatabut_Click()
+'unload form
+Unload Me
+
+'show output simulation data form
+d_outputsimdatform.Show 1
+
+
+
+End Sub
+
+Private Sub UserForm_Click()
+
+End Sub

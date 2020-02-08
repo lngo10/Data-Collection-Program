@@ -1,0 +1,177 @@
+Private Sub credatbut_Click()
+
+If datsetnamtxt.Text <> "" Then
+
+'enable data collection buttons when dataset is created
+arrbut.Enabled = True
+
+'disable create data set button if a set is created
+credatbut.Enabled = False
+
+'initialize variables
+datsettot = 1
+currow = 9
+curcol = 1
+arrtot = 0
+serendtot = 0
+serstatot = 0
+
+'initialize sentinal
+done = 0
+
+'find empty cell for a new dataset name
+Do
+
+    'found an empty space, create name cell
+    If Cells(9, 5 * (datsettot - 1) + 1) = "" Then
+    
+        Cells(9, 5 * (datsettot - 1) + 1) = datsetnamtxt.Text
+        'create data name columns
+        Cells(10, 5 * (datsettot - 1) + 1) = "Arrival Time"
+        Cells(10, 5 * (datsettot - 1) + 2) = "Interarrival Time"
+        Cells(10, 5 * (datsettot - 1) + 3) = "Service Start Time"
+        Cells(10, 5 * (datsettot - 1) + 4) = "Service End Time"
+        Cells(10, 5 * (datsettot - 1) + 5) = "Service Time"
+    
+        done = 1
+    
+    'if the cell is occupied
+    Else
+    datsettot = datsettot + 1
+    
+    End If
+    
+Loop Until done = 1
+
+Else
+
+    'if there is no dataset name
+    MsgBox "Enter name for dataset"
+    
+End If
+
+            
+End Sub
+
+Private Sub arrbut_Click()
+'initialize sentinel and variables
+done = 0
+currow = 11
+
+'find location for the arrival time data
+Do
+
+    'check if arrival time column is empty
+    If Cells(currow, 5 * (datsettot - 1) + 1) = "" Then
+        Cells(currow, 5 * (datsettot - 1) + 1) = Time
+        arrtot = arrtot + 1
+        
+        'calculate  interarrival time
+        If arrtot > 1 Then
+            temp = Cells(currow, 5 * (datsettot - 1) + 1) - Cells(currow - 1, 5 * (datsettot - 1) + 1)
+            Cells(currow, 5 * (datsettot - 1) + 2) = Format(1440 * temp, "0.00")
+        
+        End If
+        done = 1
+       
+    'if the cell is occupied, move down to the next row
+    Else
+    currow = currow + 1
+        
+    End If
+Loop Until done = 1
+
+'enable service start but if
+If serstatot = serendtot Then
+    serstabut.Enabled = True
+    
+End If
+
+
+End Sub
+
+Private Sub quitbut_Click()
+'show quit form
+Unload Me
+
+'show quit form
+Quitform.Show 1
+
+End Sub
+
+Private Sub serstabut_Click()
+'initialize sentinel and variables
+done = 0
+currow = 11
+
+'find location for the service start time data
+Do
+    'check service time time column for empty cell
+    If Cells(currow, 5 * (datsettot - 1) + 3) = "" Then
+        Cells(currow, 5 * (datsettot - 1) + 3) = Time
+        serstatot = serstatot + 1
+        done = 1
+        
+    'something in there, move to the next row
+    Else
+        currow = currow + 1
+        
+    End If
+Loop Until done = 1
+
+'disable service start button and enable service end button when a service starts
+serstabut.Enabled = False
+serendbut.Enabled = True
+    
+End Sub
+
+Private Sub serendbut_Click()
+'initialize sentimetal and variables
+done = 0
+currow = 11
+
+'find location for the service end time data
+Do
+    'check sevice time column for empty cell
+    If Cells(currow, 5 * (datsettot - 1) + 4) = "" Then
+        Cells(currow, 5 * (datsettot - 1) + 4) = Time
+        serendtot = serendtot + 1
+    
+        'calculate the service time
+        temp = Cells(currow, 5 * (datsettot - 1) + 4) - Cells(currow, 5 * (datsettot - 1) + 3)
+        Cells(currow, 5 * (datsettot - 1) + 5) = Format(1440 * temp, "0.00")
+        
+        
+        done = 1
+        
+    'if the cell is occupied move to the next row
+    Else
+    currow = currow + 1
+    
+    End If
+
+Loop Until done = 1
+'diable service end button once it is clicked and enable service start button if there is no active service
+serendbut.Enabled = False
+If arrtot > serstatot Then
+serstabut.Enabled = True
+
+End If
+
+End Sub
+
+
+Private Sub backbut_Click()
+'unload preious forms
+Unload Me
+Unload c_Simproform
+Unload b_Mainform
+Unload a_Creditsform
+
+'go back to simulation processes form
+c_Simproform.Show 1
+End Sub
+
+Private Sub UserForm_Click()
+
+End Sub

@@ -1,0 +1,123 @@
+
+Private Sub datsetnamlst_Click()
+
+End Sub
+
+Private Sub UserForm_Initialize()
+
+'set name of values for analysis
+valueslbl.Caption = "Average" & Chr(13) & "Standard Deviation" & Chr(13) & "Min" & Chr(13) & "Max" & Chr(13) & "Count"
+
+
+'figure out how many data sets there are using the countdatasets subroutine
+Call countdatasets
+
+'populate the list box
+For i = 0 To (datsettot - 1)
+    datsetnamlst.AddItem Cells(9, 5 * i + 1)
+    
+Next i
+
+
+End Sub
+
+Private Sub backbut_Click()
+'unload forms
+Unload Me
+Unload c_Simproform
+
+'show simulation processes form
+c_Simproform.Show 1
+
+End Sub
+Private Sub analyzebut_Click()
+
+'if no dataset or data type is selected
+On Error GoTo dataseterror
+
+'find out which dataset to use
+datsetselected = 0
+For i = 0 To datsettot
+    If datsetnamlst.Selected(i) = True Then
+        datsetselected = i + 1
+    End If
+
+Next i
+
+
+'move excel workbook view to focus on selected dataset
+Application.GoTo reference:=Cells(9, 5 * (datsetselected - 1) + 1), Scroll:=True
+
+
+'find ouf which type of data i want to analyze
+'selected the interarrival data
+If intarropt.Value = True Then
+    thisrange = Range(Cells(12, 5 * (datsetselected - 1) + 2), Cells(1000, 5 * (datsetselected - 1) + 2))
+    averageval = WorksheetFunction.Average(thisrange)
+    stdevval = WorksheetFunction.StDev(thisrange)
+    minval = WorksheetFunction.Min(thisrange)
+    maxval = WorksheetFunction.Max(thisrange)
+    countval = WorksheetFunction.Count(thisrange)
+    
+    'display analysis results
+    anareslbl.Caption = Format(averageval, "0.000") & Chr(13) & Format(stdevval, "0.000") & Chr(13) & Format(minval, "0.000") & Chr(13) & Format(maxval, "0.000") & Chr(13) & Format(countval, "0.000") & Chr(13)
+
+    
+'selected the service time data
+ElseIf sertimopt.Value = True Then
+    thisrange = Range(Cells(11, 5 * (datsetselected - 1) + 5), Cells(1000, 5 * (datsetselected - 1) + 5))
+    averageval = Format(WorksheetFunction.Average(thisrange), "0.000")
+    stdevval = Format(WorksheetFunction.StDev(thisrange), "0.000")
+    minval = Format(WorksheetFunction.Min(thisrange), "0.000")
+    maxval = Format(WorksheetFunction.Max(thisrange), "0.000")
+    countval = Format(WorksheetFunction.Count(thisrange), "0.000")
+     
+    'display analysis results
+    anareslbl.Caption = Format(averageval, "0.000") & Chr(13) & Format(stdevval, "0.000") & Chr(13) & Format(minval, "0.000") & Chr(13) & Format(maxval, "0.000") & Chr(13) & Format(countval, "0.000") & Chr(13)
+
+'if no data type is selected
+Else
+    MsgBox "Please select a data type"
+
+End If
+
+Exit Sub
+
+'run error message if error is encountered
+dataseterror:
+MsgBox "Please select a dataset name and data set type"
+
+End Sub
+Private Sub intarropt_Click()
+
+'interarrival button selected
+intarropt.Value = True
+sertimopt.Value = False
+
+End Sub
+
+Private Sub sertimopt_Click()
+
+'service time option selected
+intarropt.Value = False
+sertimopt.Value = True
+End Sub
+
+Private Sub printbut_Click()
+
+'if error
+On Error GoTo printerror
+
+'Print out form
+d_anasimdatform.PrintForm
+
+
+Exit Sub
+
+'run error message if error is encountered
+printerror:
+MsgBox "To print, enter file name and select a save location"
+
+
+End Sub
+

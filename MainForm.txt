@@ -1,0 +1,35 @@
+
+Private Sub quitbut_Click()
+'unload form
+Unload Me
+
+'display quit form
+Quitform.Show 1
+End Sub
+
+Private Sub simprobut_Click()
+'unload previous forms
+Unload Me
+Unload a_Creditsform
+Unload b_Mainform
+
+'show simulation processes form
+c_Simproform.Show 1
+
+End Sub
+
+
+
+Private Sub UserForm_Click()
+
+End Sub
+
+Private Sub utibut_Click()
+
+'unload form
+Unload Me
+
+'show utilities form
+c_Utiform.Show 1
+
+End Sub

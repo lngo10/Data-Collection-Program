@@ -1,0 +1,47 @@
+
+'Declaring global variables
+'variable to count total number of datasets
+Global datsettot As Integer
+
+'variable for current row location
+Global currow As Integer
+
+'variable for current column location
+Global curcol As Integer
+
+'variable for total number of arrivals
+Global arrtot As Integer
+
+'variable for number of services started
+Global serstatot As Integer
+
+'variable for number of services ended
+Global serendtot As Integer
+
+'variable for selected dataset
+Global datsetselected As Integer
+
+'variable for total number of data sets
+Global datpoitot As Integer
+
+Sub countdatasets()
+'Figure out how many data sets there are
+done = 0
+datsettot = 0
+currow = 9
+
+Do
+
+    'is there a dataset here
+    If Cells(9, 5 * datsettot + 1) = "" Then
+        done = 1
+        
+    'data set is there
+    Else
+    datsettot = datsettot + 1
+    
+    End If
+    
+Loop Until done = 1
+
+End Sub

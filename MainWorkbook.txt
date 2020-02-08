@@ -1,0 +1,11 @@
+/Workbook Code
+
+'open application credits form on excel startup
+Private Sub Workbook_Open()
+a_Creditsform.Show 1
+
+'change column width to fit data and names
+Columns.ColumnWidth = 15
+
+
+End Sub

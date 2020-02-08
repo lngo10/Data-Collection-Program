@@ -1,0 +1,192 @@
+
+
+Private Sub datsetnamlst_Click()
+
+End Sub
+
+Private Sub UserForm_Initialize()
+
+'Figure out how many data sets there are
+done = 0
+datsettot = 0
+currow = 9
+
+Do
+
+    'is there a dataset here
+    If Cells(9, 5 * datsettot + 1) = "" Then
+        done = 1
+        
+    'data set is there
+    Else
+    datsettot = datsettot + 1
+    
+    End If
+    
+Loop Until done = 1
+
+
+'populate the list box
+For i = 0 To (datsettot - 1)
+    datsetnamlst.AddItem Cells(9, 5 * i + 1)
+    
+Next i
+
+
+End Sub
+
+Private Sub backbut_Click()
+
+'unload forms
+Unload Me
+
+'show simulation processes form
+c_Simproform.Show 1
+
+End Sub
+
+Private Sub intarropt_Click()
+
+'interarrival time option selected
+intarropt.Value = True
+sertimopt.Value = False
+
+End Sub
+
+Private Sub sertimopt_Click()
+
+'service time option selected
+intarropt.Value = False
+sertimopt.Value = True
+
+End Sub
+
+Private Sub printbut_Click()
+
+'initialize variables
+datsetselected = 0
+
+'find out which data set is selected
+For i = 0 To datsettot - 1
+    If datsetnamlst.Selected(i) = True Then
+        datsetselected = i + 1
+    
+    End If
+    
+Next i
+
+
+'interarrival time selected
+If intarropt.Value = True Then
+    'count the number of data points in selected data set
+    thisrange = Range(Cells(12, 5 * (datsetselected - 1) + 2), Cells(1000, 5 * (datsetselected - 1) + 2))
+    datpoitot = WorksheetFunction.Count(thisrange)
+    
+    'printout selected dataset
+    Range(Cells(12, 5 * (datsetselected - 1) + 2), Cells(12 + datpoitot, 5 * (datsetselected - 1) + 2)).Select
+    Selection.PrintOut
+    
+'service time selected
+ElseIf sertimopt.Value = True Then
+    'count the number of data points in selected data set
+    thisrange = Range(Cells(11, 5 * (datsetselected - 1) + 5), Cells(1000, 5 * (datsetselected - 1) + 5))
+    datpoitot = WorksheetFunction.Count(thisrange)
+    
+    'printout selected dataset
+    Range(Cells(11, 5 * (datsetselected - 1) + 5), Cells(11 + datpoitot, 5 * (datsetselected - 1) + 5)).Select
+    Selection.PrintOut
+
+'if no data set type is selected
+Else
+    MsgBox "Please select a data type"
+    
+End If
+
+  
+End Sub
+
+Private Sub savebut_Click()
+
+'if no dataset or data type is selected
+On Error GoTo dataseterror
+
+
+'initialize variables
+datsetselected = 0
+
+'find out which data set is selected
+For i = 0 To datsettot - 1
+    If datsetnamlst.Selected(i) = True Then
+        datsetselected = i + 1
+    
+    End If
+    
+Next i
+
+
+
+'interarrival time selected
+If intarropt.Value = True Then
+
+    'creates output file
+    Open savfilnamtxt For Output As 1
+    
+
+    'count the number of data points in selected data set
+    thisrange = Range(Cells(12, 5 * (datsetselected - 1) + 2), Cells(1000, 5 * (datsetselected - 1) + 2))
+    datpoitot = WorksheetFunction.Count(thisrange)
+    
+        'output selected dataset
+        For i = 1 To datpoitot
+    
+        'write the data to the file
+        Print #1, Format(Cells(11 + i, 5 * (datsetselected - 1) + 2), "0.00")
+
+   
+        Next i
+    
+    Close 1
+    
+    'let user know file has been saved
+    MsgBox "File Saved to Documents folder"
+
+    
+'service time selected
+ElseIf sertimopt.Value = True Then
+
+    'creates output file
+    Open savfilnamtxt For Output As 1
+
+    'count the number of data points in selected data set
+    thisrange = Range(Cells(11, 5 * (datsetselected - 1) + 5), Cells(1000, 5 * (datsetselected - 1) + 5))
+    datpoitot = WorksheetFunction.Count(thisrange)
+    
+    'output selected dataset
+    For i = 1 To datpoitot
+    
+         'write the data to the file
+        Print #1, Format(Cells(10 + i, 5 * (datsetselected - 1) + 5), "0.00")
+
+   
+        Next i
+    
+    Close 1
+    
+    'let user know file has been saved
+    MsgBox "File Saved to Documents folder"
+    
+'if no data set type is selected
+Else
+    MsgBox "Please select a dataset and type of data to output"
+    
+End If
+
+
+
+Exit Sub
+
+'show error message if error is encountered
+dataseterror:
+MsgBox "Please enter a name for output file"
+                                       
+End Sub
